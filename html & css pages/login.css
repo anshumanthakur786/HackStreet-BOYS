@@ -10,7 +10,7 @@ body {
   color: #000;
   line-height: 1.5;
   min-height: 100vh;
-  overflow-y: auto; /* Enables scrolling */
+  overflow-y: auto; 
 }
 
 .container {
