@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  overflow-y: hidden;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background-color: #572c59;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+.sidebar nav ul li {
+  margin: 20px 0;
+}
+
+.sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.logout {
+  margin-top: auto;
+}
+
+.logout a {
+  color: #dfd;
+  text-decoration: underline;
+}
+
+/* Chat layout */
+.chat-container {
+  display: flex;
+  flex: 1;
+}
+
+/* Left panel: Friends */
+.friends-panel {
+  width: 300px;
+  background-color: #f3d8ef;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.friend-list {
+  margin-top: 20px;
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.friend-list li {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.friend-list .active {
+  background-color: #fff4d8;
+}
+
+/* Right panel: Chat */
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+/* Chat Header */
+.chat-header {
+  background-color: #fff4d8;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Chat body */
+.chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Chat input */
+.chat-input {
+  padding: 10px 20px;
+  background-color: #b88cad;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  background: #b88cad;
+  color: white;
+  font-size: 14px;
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HackSktreet Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>HackStreet Boys</h2>
+    <a href="#">Home</a>
+    <a href="dashboard.html">Track Expense</a>
+    <a href="budget.html">Budget Analytics</a>
+    <a href="chat.html">Collab Corner</a>
+    <a href="login.html">Login/Sign Up</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <div class="search-bar">
+      <input type="text" placeholder="search here........" />
+    </div>
+
+    <div class="welcome-card">
+      <div class="welcome-text">
+        <p id="current-date"></p>
+        <h2>Welcome back, username!</h2>
+        <p>Remember smart finance is key to secure future...</p>
+      </div>
+      <div class="profile-img">
+        <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png" alt="Profile" />
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box">
+        <h3>Check Bank Balance</h3>
+        ************<br>
+        <p>Amount spent</p>
+        <p>Amount saved</p>
+        <p>Friends and people</p>
+        <p>Rating</p>
+      </div>
+      <div class="info-box">
+        <h3>Notifications</h3>
+        <p>Notifications of government schemes and web app</p>
+      </div>
+    </div>
+
+    <div class="scheme-box">
+      Government Schemes Enrolled in :-
+    </div>
+  </div>
+
+  <!-- Ask Me Button -->
+  <button class="ask-btn">
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712039.png" alt="Bot Icon"/>
+    <span>Ask AI to create a budget......<br><strong>Ask me</strong></span>
+  </button>
+
+  <!-- Chatbot Popup -->
+  <div class="chat-popup" id="chat-popup">
+    <div class="chat-header">
+      <span>💬 AI Budget Assistant</span>
+      <button class="close-chat" onclick="toggleChat()">×</button>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <div class="bot-message">Hi! I'm here to help you manage your budget. 😊</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message..." onkeydown="handleEnter(event)">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Dynamic Date
+    const dateElement = document.getElementById('current-date');
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('en-GB');
+    dateElement.textContent = formattedDate;
+
+    // Chat Toggle
+    function toggleChat() {
+      document.getElementById("chat-popup").classList.toggle("show");
+    }
+
+    document.querySelector('.ask-btn').addEventListener('click', toggleChat);
+
+    // Chat Message Handling
+    function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value.trim();
+      if (message === "") return;
+
+      const chatBody = document.getElementById("chat-body");
+
+      const userDiv = document.createElement("div");
+      userDiv.className = "user-message";
+      userDiv.textContent = message;
+      chatBody.appendChild(userDiv);
+
+      const botDiv = document.createElement("div");
+      botDiv.className = "bot-message";
+      botDiv.textContent = "🤖 AI is processing your request...";
+      chatBody.appendChild(botDiv);
+
+      chatBody.scrollTop = chatBody.scrollHeight;
+      input.value = "";
+    }
+
+    function handleEnter(e) {
+      if (e.key === "Enter") sendMessage();
+    }
+  </script>
+</body>
+</html>
