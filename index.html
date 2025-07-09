@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HackSktreet Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>HackSktreet Boys</h2>
+    <a href="#">Home</a>
+    <a href="dashboard.html">Track Expense</a>
+    <a href="budget.html">Budget Analytics</a>
+    <a href="chat.html">Collab Corner</a>
+    <a href="login.html">Login/Sign Up</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <div class="search-bar">
+      <input type="text" placeholder="search here..." />
+    </div>
+
+    <div class="welcome-card">
+      <div class="welcome-text">
+        <p id="current-date"></p>
+        <h2>Welcome back, username!</h2>
+        <p>Remember smart finance is key to secure future...</p>
+      </div>
+      <div class="profile-img">
+        <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png" alt="Profile" />
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box">
+        <h3>Check Bank Balance</h3>
+        ************<br>
+        <p>Amount spent</p>
+        <p>Amount saved</p>
+        <p>Friends and people</p>
+        <p>Rating</p>
+      </div>
+      <div class="info-box">
+        <h3>Notifications</h3>
+        <p>Notifications of government schemes and web app</p>
+      </div>
+    </div>
+
+    <div class="scheme-box">
+      Government Schemes Enrolled in:
+    </div>
+  </div>
+
+  <!-- Ask Me Button -->
+  <button class="ask-btn">
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712039.png" alt="Bot Icon"/>
+    <span>Ask AI to create a budget...<br><strong>Ask me</strong></span>
+  </button>
+
+  <!-- Chatbot Popup -->
+  <div class="chat-popup" id="chat-popup">
+    <div class="chat-header">
+      <span>💬 AI Budget Assistant</span>
+      <button class="close-chat" onclick="toggleChat()">×</button>
+    </div>
+    <div class="chat-body" id="chat-body"></div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message..." onkeydown="handleEnter(event)">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const chatBody = document.getElementById("chat-body");
+    const input = document.getElementById("user-input");
+
+    let history = JSON.parse(localStorage.getItem("chat-history")) || [
+      { role: "system", content: "You are a helpful financial assistant." },
+    ];
+
+    const dateElement = document.getElementById('current-date');
+    dateElement.textContent = new Date().toLocaleDateString('en-GB');
+
+    function toggleChat() {
+      document.getElementById("chat-popup").classList.toggle("show");
+      if (document.getElementById("chat-popup").classList.contains("show")) {
+        loadHistory();
+      }
+    }
+
+    function updateChatUI(role, content) {
+      const div = document.createElement("div");
+      div.className = role === "user" ? "user-message" : "bot-message";
+      div.textContent = content;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function loadHistory() {
+      chatBody.innerHTML = "";
+      history.filter(msg => msg.role !== "system").forEach(msg =>
+        updateChatUI(msg.role, msg.content)
+      );
+    }
+
+    async function sendMessage() {
+      const message = input.value.trim();
+      if (!message) return;
+
+      updateChatUI("user", message);
+      history.push({ role: "user", content: message });
+      input.value = "";
+      updateChatUI("assistant", "Typing...");
+
+      try {
+        const res = await fetch("http://localhost:3000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history }),
+        });
+
+        const data = await res.json();
+        chatBody.lastChild.remove(); // remove "Typing..."
+        updateChatUI("assistant", data.content);
+        history.push({ role: "assistant", content: data.content });
+        localStorage.setItem("chat-history", JSON.stringify(history));
+      } catch (err) {
+        console.error("API Error:", err);
+        chatBody.lastChild.remove();
+        updateChatUI("assistant", "⚠️ Failed to connect to AI.");
+      }
+    }
+
+    function handleEnter(e) {
+      if (e.key === "Enter") sendMessage();
+    }
+
+    document.querySelector(".ask-btn").addEventListener("click", toggleChat);
+  </script>
+</body>
+</html>
